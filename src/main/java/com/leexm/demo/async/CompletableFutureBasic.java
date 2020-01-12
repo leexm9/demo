@@ -8,7 +8,7 @@ import java.util.concurrent.*;
  * @author leexm
  * @date 2020-01-12 10:58
  */
-public class TestCompletableFuture {
+public class CompletableFutureBasic {
 
     private static final ExecutorService EXECUTORS = Executors.newFixedThreadPool(4);
 
