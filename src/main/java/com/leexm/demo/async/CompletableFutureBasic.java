@@ -21,7 +21,8 @@ public class CompletableFutureBasic {
 //        thenRun();
 //        thenAccept();
 //        thenApply();
-        whenComplete();
+//        whenComplete();
+        throwing(true);
     }
 
     private static void waiting() {
@@ -235,6 +236,31 @@ public class CompletableFutureBasic {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 异常的处理
+     */
+    private static void throwing(final boolean flag) {
+        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (flag) {
+                throw new RuntimeException("test exception.");
+            }
+            return "Hello world!";
+        }).exceptionally(e -> e.getMessage());
+
+        System.out.println("--- main thread wait future result ---");
+        try {
+            System.out.println(future.get());
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        System.out.println("--- main thread got future result ---");
     }
 
 }
