@@ -43,8 +43,8 @@ public class MultiCompletableFuture {
 //        CompletableFuture<Void> result = allOf(0, 10);
 //        System.out.println(result.get());
 
-        List<Integer> result = allOfThenAccept(0, 10);
-//        List<Integer> result = streamFuture(0, 10);
+//        List<Integer> result = allOfThenAccept(0, 10);
+        List<Integer> result = streamFuture(0, 10);
         System.out.println(result);
         System.out.println(String.format("耗时: %d 秒", (System.currentTimeMillis() - t1) / 1000));
     }
@@ -103,6 +103,13 @@ public class MultiCompletableFuture {
         return CompletableFuture.allOf(list.toArray(new CompletableFuture[list.size()]));
     }
 
+    /**
+     * allOf 方式调用结果输出
+     *
+     * @param start
+     * @param end
+     * @return
+     */
     private static List<Integer> allOfThenAccept(int start, int end) {
         List<Integer> result = new ArrayList<>();
         List<CompletableFuture<Void>> list = IntStream.range(start, end).boxed().map(i -> CompletableFuture.supplyAsync(() -> {
@@ -124,7 +131,7 @@ public class MultiCompletableFuture {
     }
 
     /**
-     * stream 与 CompletableFuture 结合，返回结果的 allOf 实现
+     * stream 与 CompletableFuture 结合
      *
      * @param start
      * @param end
