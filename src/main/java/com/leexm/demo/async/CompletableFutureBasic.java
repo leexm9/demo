@@ -114,7 +114,7 @@ public class CompletableFutureBasic {
     }
 
     /**
-     * 基于 thenRun 实异现异步任务 A，执行完毕后，激活异步任务 B 执行
+     * 基于 thenRun 异步任务 A 执行完毕后激活异步任务 B 执行
      * 注意：这种方式激活的异步任务 B 是拿不到任务 A 的执行结果的
      */
     private static void thenRun() {

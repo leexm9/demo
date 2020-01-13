@@ -1,10 +1,8 @@
 package com.leexm.demo.async;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -40,11 +38,15 @@ public class MultiCompletableFuture {
         long t1 = System.currentTimeMillis();
 //        CompletableFuture<String> result = thenCompose(futureA, () -> "worid");
 //        CompletableFuture<String> result = thenCombine(futureA, futureB, (a, b) -> String.format("%s %s!", a, b));
-//        CompletableFuture<Void> result = allOf(0, 10);
-        CompletableFuture<Object> result = anyOf(10);
+//        CompletableFuture<Object> result = anyOf(10);
 
-        System.out.println(result.get());
-        System.out.println(String.format("耗时: %d 毫秒", (System.currentTimeMillis() - t1)));
+//        CompletableFuture<Void> result = allOf(0, 10);
+//        System.out.println(result.get());
+
+        List<Integer> result = allOfThenAccept(0, 10);
+//        List<Integer> result = streamFuture(0, 10);
+        System.out.println(result);
+        System.out.println(String.format("耗时: %d 秒", (System.currentTimeMillis() - t1) / 1000));
     }
 
     /**
@@ -99,6 +101,47 @@ public class MultiCompletableFuture {
             return i * 2;
         })).collect(Collectors.toList());
         return CompletableFuture.allOf(list.toArray(new CompletableFuture[list.size()]));
+    }
+
+    private static List<Integer> allOfThenAccept(int start, int end) {
+        List<Integer> result = new ArrayList<>();
+        List<CompletableFuture<Void>> list = IntStream.range(start, end).boxed().map(i -> CompletableFuture.supplyAsync(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(i);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println(String.format("iterator:%s", i));
+            return i * 2;
+        })).map(future -> future.thenAccept(result::add)).collect(Collectors.toList());
+
+        try {
+            CompletableFuture.allOf(list.toArray(new CompletableFuture[list.size()])).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * stream 与 CompletableFuture 结合，返回结果的 allOf 实现
+     *
+     * @param start
+     * @param end
+     * @return
+     */
+    private static List<Integer> streamFuture(int start, int end) {
+        List<CompletableFuture<Integer>> list = IntStream.range(start, end).boxed().map(i -> CompletableFuture.supplyAsync(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(i);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println(String.format("iterator:%s", i));
+            return i * 2;
+        })).collect(Collectors.toList());
+
+        return list.stream().map(CompletableFuture::join).collect(Collectors.toList());
     }
 
     /**
