@@ -2,6 +2,7 @@ package com.leexm.demo.nio.channel;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.Channel;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
@@ -15,6 +16,7 @@ public class ChannelCopy {
     public static void main(String[] args) throws IOException {
         ReadableByteChannel source = Channels.newChannel(System.in);
         WritableByteChannel dest = Channels.newChannel(System.out);
+
         channelCopy1(source, dest);
 //        channelCopy2(source, dest);
         source.close();
