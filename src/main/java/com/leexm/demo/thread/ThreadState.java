@@ -1,5 +1,7 @@
 package com.leexm.demo.thread;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * 验证线程 waiting、timed_waiting 到 blocked 状态的切换
  *
@@ -9,14 +11,16 @@ package com.leexm.demo.thread;
 public class ThreadState {
 
     public static void main(String[] args) {
-        System.out.println("Hello World");
         Object lock = new Object();
         Thread threadA = new Thread(new RunA(lock), "A");
+        // new 状态
+        getThreadState(threadA);
         threadA.start();
+        // runnable 状态
         getThreadState(threadA);
 
         try {
-            Thread.sleep(1000);
+            TimeUnit.MILLISECONDS.sleep(1000);
         } catch (InterruptedException e) {
         }
         Thread threadB = new Thread(new RunB(lock), "B");
@@ -50,7 +54,6 @@ public class ThreadState {
 
         @Override
         public void run() {
-
             synchronized (lock) {
                 try {
                     System.out.println("A begin");
@@ -73,7 +76,6 @@ public class ThreadState {
 
         @Override
         public void run() {
-
             synchronized (lock) {
                 System.out.println("b come");
                 while (true) {

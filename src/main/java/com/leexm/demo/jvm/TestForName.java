@@ -8,8 +8,8 @@ public class TestForName {
 
     public static void main(String[] args) {
         try {
-//            Class.forName("com.leexm.demo.jvm.ForName");
-//            System.out.println("======================");
+            Class.forName("com.leexm.demo.jvm.ForName");
+            System.out.println("======================");
             ClassLoader.getSystemClassLoader().loadClass("com.leexm.demo.jvm.ForName");
             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~");
             Class clazz = ForName.class;
