@@ -1,6 +1,6 @@
 package com.leexm.demo.nio.scattergather;
 
-import com.leexm.demo.nio.object.Persion;
+import com.leexm.demo.object.Person;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -28,7 +28,7 @@ public class ScatterClient {
         socketChannel.read(bufferArray);
         ageBuffer.flip();
         nameBuffer.flip();
-        Persion persion = new Persion();
+        Person persion = new Person();
         persion.setAge(iAgeBuffer.get());
         persion.setName(new String(nameBuffer.array(), 0, nameBuffer.limit(), "UTF-8"));
         System.out.println(persion);

@@ -19,6 +19,7 @@ public class Disorder {
             y = 0;
             a = 0;
             b = 0;
+            // (x, y) 可能的组合是 (1, 1)、(0, 1)、(1, 0)
             Thread one = new Thread(() -> {
                 a = 1;
                 x = b;
@@ -31,6 +32,7 @@ public class Disorder {
             other.start();
             one.join();
             other.join();
+            // 一旦出现 (0, 0) 证明出现了指令重排
             if (x == 0 && y == 0) {
                 System.out.println(String.format("%d (%d, %d)", i, x, y));
                 break;

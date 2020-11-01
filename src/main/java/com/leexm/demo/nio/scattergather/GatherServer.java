@@ -1,6 +1,6 @@
 package com.leexm.demo.nio.scattergather;
 
-import com.leexm.demo.nio.object.Persion;
+import com.leexm.demo.object.Person;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -38,7 +38,7 @@ public class GatherServer {
             System.out.println("客户端连接请求....");
             ageBuffer.clear();
             nameBuffer.clear();
-            Persion persion = new Persion("Tom", 20);
+            Person persion = new Person("Tom", 20);
             iAgeBuffer.put(persion.getAge());
             nameBuffer.put(persion.getName().getBytes("UTF-8"));
             iAgeBuffer.flip();

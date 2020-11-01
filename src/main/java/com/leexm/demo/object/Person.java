@@ -1,19 +1,19 @@
-package com.leexm.demo.nio.object;
+package com.leexm.demo.object;
 
 /**
  * @author xm
  * @date 2019-07-06 14:42
  */
-public class Persion {
+public class Person {
 
     private String name;
 
     private int age;
 
-    public Persion() {
+    public Person() {
     }
 
-    public Persion(String name, int age) {
+    public Person(String name, int age) {
         this.name = name;
         this.age = age;
     }
@@ -36,7 +36,7 @@ public class Persion {
 
     @Override
     public String toString() {
-        return "Persion{" +
+        return "Person{" +
                 "name='" + name + '\'' +
                 ", age=" + age +
                 '}';
