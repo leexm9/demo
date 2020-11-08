@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Created-By: leexm
+Premain-Class: com.leexm.demo.jvm.agent.ObjectSizeAgent

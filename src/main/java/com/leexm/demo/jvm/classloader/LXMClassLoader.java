@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
 /**
- * 自定义类加载器
+ * 自定义类加载器，重写 findClass 方法，依然遵守双亲委派机制
  *
  * @author leexm
  * @date 2020-10-31 08:00

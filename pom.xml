@@ -70,6 +70,34 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifestFile>
+                            src/main/resources/META_INF/MANIFEST.MF
+                        </manifestFile>
+<!--                        &lt;!&ndash; 第二种写法：不依赖 MANIFEST.MF 文件 &ndash;&gt;-->
+<!--                        <manifestEntries>-->
+<!--                            <Premain-Class>com.leexm.demo.agent.ObjectSizeAgent</Premain-Class>-->
+<!--                            <Can-Redefine-Classes>true</Can-Redefine-Classes>-->
+<!--                        </manifestEntries>-->
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <phase>package</phase>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
