@@ -5,6 +5,7 @@ import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -18,11 +19,9 @@ public class PhantomQueue {
 
     public static void main(String[] args) throws InterruptedException {
         ReferenceQueue queue = new ReferenceQueue();
-        List<byte[]> list = new ArrayList<>();
-        PhantomReference<ReferenceTest.Person> phantomReference =
-                new PhantomReference<>(new ReferenceTest.Person("Tom"), queue);
-
-        new Thread(() -> {
+        PhantomReference<TestReference.Person> phantomReference =
+                new PhantomReference<>(new TestReference.Person("Tom"), queue);
+        CompletableFuture.runAsync(() -> {
             boolean flag = false;
             while (!flag) {
                 // gc 发生时，会将虚引用入队，这里拿到的就是虚引用本身，上文中的 phantomReference
@@ -33,10 +32,11 @@ public class PhantomQueue {
                 }
             }
             System.out.println("线程退出");
-        }).start();
+        });
 
         // 线程 new 对象，导致 gc
-        new Thread(() -> {
+        List<byte[]> list = new ArrayList<>();
+        CompletableFuture.runAsync(() -> {
             for (int i = 0; i < 20; i++) {
                 System.out.println("......add......");
                 list.add(new byte[1024 * 1204 * 1]);
@@ -46,7 +46,7 @@ public class PhantomQueue {
                     e.printStackTrace();
                 }
             }
-        }).start();
+        });
 
         TimeUnit.SECONDS.sleep(1);
         System.out.println("hello, world!");

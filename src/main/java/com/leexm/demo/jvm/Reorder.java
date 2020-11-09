@@ -1,17 +1,19 @@
 package com.leexm.demo.jvm;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * 验证 CPU 的指令重排序
  *
  * @author leexm
  * @date 2020-05-05 11:21
  */
-public class Disorder {
+public class Reorder {
 
     private static int a = 0, b = 0;
     private static int x = 0, y = 0;
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         int i = 0;
         for (;;) {
             i++;
@@ -20,18 +22,16 @@ public class Disorder {
             a = 0;
             b = 0;
             // (x, y) 可能的组合是 (1, 1)、(0, 1)、(1, 0)
-            Thread one = new Thread(() -> {
+            CompletableFuture<Void> future1 = CompletableFuture.runAsync(() -> {
                 a = 1;
                 x = b;
             });
-            Thread other = new Thread(() -> {
+            CompletableFuture<Void> future2 = CompletableFuture.runAsync(() -> {
                 b = 1;
                 y = a;
             });
-            one.start();
-            other.start();
-            one.join();
-            other.join();
+            CompletableFuture<Void> future = CompletableFuture.allOf(future1, future2);
+            future.join();
             // 一旦出现 (0, 0) 证明出现了指令重排
             if (x == 0 && y == 0) {
                 System.out.println(String.format("%d (%d, %d)", i, x, y));

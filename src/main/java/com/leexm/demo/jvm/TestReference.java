@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  * @author leexm
  * @date 2020-04-14 19:07
  */
-public class ReferenceTest {
+public class TestReference {
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -66,6 +66,8 @@ public class ReferenceTest {
         PhantomReference<byte[]> phantomReference = new PhantomReference<>(new Person("Helen"), queue);
         // 特点一，无非通过虚引用得到对象
         System.out.println(phantomReference.get());
+        System.gc();
+        TimeUnit.MILLISECONDS.sleep(100);
     }
 
     static class Person {
