@@ -14,7 +14,7 @@ public class CountdownLatchDemo {
 
     public static void main(String[] args) throws InterruptedException {
         Random random = new Random();
-        ExecutorService service = Executors. newCachedThreadPool();
+        ExecutorService service = Executors.newCachedThreadPool();
         final CountDownLatch cdOrder = new CountDownLatch(1);
         final CountDownLatch cdAnswer = new CountDownLatch(4);
         for (int i = 0; i < 4; i++) {
